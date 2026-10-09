@@ -136,11 +136,17 @@ export default function TeamDirectory() {
             >
               <div className="shrink-0 flex justify-center sm:block">
                 <div className="w-28 h-28 rounded-2xl overflow-hidden border-4 border-[#F5F0E6] p-1 bg-white shadow-sm group-hover:border-[#C6A15B] transition-colors duration-300">
-                  <img
-                    src={trainer.image}
-                    alt={trainer.name}
-                    className="w-full h-full rounded-xl object-cover"
-                  />
+                  {trainer.image ? (
+                    <img
+                      src={trainer.image}
+                      alt={trainer.name}
+                      className="w-full h-full rounded-xl object-cover"
+                    />
+                  ) : (
+                    <div className="w-full h-full rounded-xl bg-[#0B1F33] flex items-center justify-center text-[#F5F0E6] text-3xl font-bold">
+                      {trainer.name.charAt(0)}
+                    </div>
+                  )}
                 </div>
               </div>
 
