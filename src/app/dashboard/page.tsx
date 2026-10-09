@@ -1,6 +1,6 @@
 "use client";
 
-import { BarChart3, Users, BookOpen, ArrowUpRight, CheckCircle2 } from "lucide-react";
+import { BarChart3, BookOpen, ArrowUpRight, CheckCircle2 } from "lucide-react";
 import { motion } from "framer-motion";
 
 const stats = [

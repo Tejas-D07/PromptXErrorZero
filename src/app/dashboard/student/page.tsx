@@ -26,7 +26,7 @@ export default function StudentDashboard() {
   
   // Data States
   const [attendance, setAttendance] = useState({ total: 0, present: 0, absent: 0, late: 0, percentage: 100 });
-  const [requests, setRequests] = useState<any[]>([]);
+  const [requests, setRequests] = useState<Array<{id: string, type: string, description: string, status: string, created_at: string, comments: string}>>([]);
   const [formMsg, setFormMsg] = useState<{ type: "success" | "error", text: string } | null>(null);
   const [toast, setToast] = useState<{ title: string; message: string; type: 'success'|'error' } | null>(null);
 
@@ -81,7 +81,9 @@ export default function StudentDashboard() {
   };
 
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     fetchDashboardData();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [supabase]);
 
   // Entrance Animation
@@ -105,7 +107,7 @@ export default function StudentDashboard() {
         'postgres_changes',
         { event: 'UPDATE', schema: 'public', table: 'requests', filter: `user_id=eq.${userId}` },
         (payload) => {
-          setRequests(prev => prev.map(r => r.id === payload.new.id ? payload.new : r));
+          setRequests(prev => prev.map(r => r.id === payload.new.id ? (payload.new as typeof r) : r));
           setToast({
             title: "Request Updated",
             message: `Your ${payload.new.type} request was ${payload.new.status}.`,
@@ -130,7 +132,7 @@ export default function StudentDashboard() {
     if (reqFile) {
       const fileExt = reqFile.name.split('.').pop();
       const fileName = `${userId}-${Date.now()}.${fileExt}`;
-      const { data: uploadData, error: uploadError } = await supabase.storage
+      const { error: uploadError } = await supabase.storage
         .from('documents')
         .upload(fileName, reqFile);
 

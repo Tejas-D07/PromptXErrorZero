@@ -8,7 +8,7 @@ const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
 const supabase = createClient(supabaseUrl, supabaseKey);
 
 async function testExportData() {
-  const { data: { user }, error: loginErr } = await supabase.auth.signInWithPassword({
+  await supabase.auth.signInWithPassword({
     email: process.env.TEST_HRD_EMAIL,
     password: process.env.TEST_HRD_PASSWORD
   });

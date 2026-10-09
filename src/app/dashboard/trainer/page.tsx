@@ -1,13 +1,13 @@
 "use client";
 
 import { useState, useEffect, useRef } from "react";
-import { BookOpen, Users, Calendar, ArrowUpRight, BarChart3, Clock, Loader2, AlertCircle } from "lucide-react";
+import { BookOpen, Users, ArrowUpRight, BarChart3, Loader2, AlertCircle } from "lucide-react";
 import Link from "next/link";
 import { createClient } from "@/lib/supabase/client";
 import gsap from "gsap";
 
 export default function TrainerDashboard() {
-  const [classes, setClasses] = useState<any[]>([]);
+  const [classes, setClasses] = useState<Array<{id: string, name: string, enrollments: {count: number}[]}>>([]);
   const [loading, setLoading] = useState(true);
   const supabase = createClient();
   const containerRef = useRef<HTMLDivElement>(null);
@@ -59,7 +59,7 @@ export default function TrainerDashboard() {
           { label: "Total Assigned Classes", value: classes.length.toString(), icon: BookOpen, color: "#0B1F33" },
           { label: "Active Cohorts", value: classes.length.toString(), icon: Users, color: "#C6A15B" },
           { label: "Live Tracking", value: "Active", icon: BarChart3, color: "#B84A4A" },
-        ].map((stat, i) => (
+        ].map((stat) => (
           <div
             key={stat.label}
             className="animate-up opacity-0 bg-white p-6 rounded-3xl border border-[#EAE3D5] shadow-[0_8px_30px_rgb(0,0,0,0.04)] flex items-center justify-between hover:shadow-[0_8px_30px_rgba(198,161,91,0.08)] transition-all duration-300"
@@ -92,11 +92,11 @@ export default function TrainerDashboard() {
           <div className="p-16 flex flex-col items-center justify-center text-center bg-[#F5F0E6]/10">
             <AlertCircle className="w-12 h-12 text-[#D1C7B5] mb-4" />
             <h4 className="text-lg font-bold text-[#0B1F33] mb-2">No Assigned Classes</h4>
-            <p className="text-[#5C6670] font-medium">You haven't been assigned to any cohorts yet. Please contact the HRD Head.</p>
+            <p className="text-[#5C6670] font-medium">You haven&apos;t been assigned to any cohorts yet. Please contact the HRD Head.</p>
           </div>
         ) : (
           <div className="divide-y divide-[#EAE3D5]">
-            {classes.map((c, i) => (
+            {classes.map((c) => (
               <div 
                 key={c.id} 
                 className="p-8 flex flex-col md:flex-row md:items-center justify-between gap-6 hover:bg-[#F5F0E6]/30 transition-colors"

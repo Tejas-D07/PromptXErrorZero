@@ -1,7 +1,8 @@
+/* eslint-disable @next/next/no-img-element */
 "use client";
 
 import { useState, useEffect, useRef } from "react";
-import { Search, MapPin, Mail, Clock, CalendarDays, Filter } from "lucide-react";
+import { Search, Mail, Clock, CalendarDays, Filter } from "lucide-react";
 import gsap from "gsap";
 import { cn } from "@/lib/utils";
 
@@ -10,20 +11,20 @@ import { createClient } from "@/lib/supabase/client";
 const EXPERTISE_FILTERS = ["All", "Leadership", "Technical", "Placement", "Relations"];
 
 export default function TeamDirectory() {
-  const [trainers, setTrainers] = useState<any[]>([]);
-  const [loading, setLoading] = useState(true);
+  const [trainers, setTrainers] = useState<Array<{id: string, name: string, role: string, expertise: string[], officeHours: string, email: string, image: string}>>([]);
+  const [, setLoading] = useState(true);
 
   useEffect(() => {
     async function loadTrainers() {
       const supabase = createClient();
-      const { data, error } = await supabase
+      const { data } = await supabase
         .from('profiles')
         .select('*')
         .in('role', ['trainer', 'hrd']);
 
       if (data) {
         // Map data to expected format, providing fallbacks for missing schema fields
-        const formattedTrainers = data.map((profile, i) => ({
+        const formattedTrainers = data.map((profile) => ({
           id: profile.id,
           name: profile.full_name || "Unknown Name",
           role: profile.role === 'hrd' ? "Senior HRD Mentor" : "Trainer",

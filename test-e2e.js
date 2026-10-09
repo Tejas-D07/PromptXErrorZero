@@ -20,7 +20,7 @@ async function runTests() {
 
   // 1. Verify schema (profiles table)
   console.log("\\n--- 1. Verification ---");
-  const { data: schemaCheck, error: schemaErr } = await adminClient.from('profiles').select('id').limit(1);
+  const { error: schemaErr } = await adminClient.from('profiles').select('id').limit(1);
   if (schemaErr) {
     console.error("FAIL: Schema check failed.", schemaErr);
     return;

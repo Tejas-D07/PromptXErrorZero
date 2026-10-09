@@ -24,15 +24,27 @@ import gsap from "gsap";
 import jsPDF from "jspdf";
 import autoTable from "jspdf-autotable";
 
+type RequestType = {
+  id: string;
+  type: string;
+  description: string;
+  status: string;
+  created_at: string;
+  comments: string;
+  document_url?: string;
+  student_id: string;
+  profile: { full_name: string; role: string };
+};
+
 export default function HRDDashboard() {
   const supabase = createClient();
   const [loading, setLoading] = useState(true);
   const [isPending, startTransition] = useTransition();
   
-  const [requests, setRequests] = useState<any[]>([]);
+  const [requests, setRequests] = useState<RequestType[]>([]);
   const [search, setSearch] = useState("");
   const [filter, setFilter] = useState<"all" | "pending" | "approved" | "rejected">("pending");
-  const [selectedReq, setSelectedReq] = useState<any | null>(null);
+  const [selectedReq, setSelectedReq] = useState<RequestType | null>(null);
   const [comments, setComments] = useState("");
   const [actionError, setActionError] = useState("");
   const [minAttendance, setMinAttendance] = useState(85);
@@ -64,7 +76,7 @@ export default function HRDDashboard() {
         if (payload.eventType === 'INSERT') {
           // Fetch the profile for the new request
           const { data: profile } = await supabase.from('profiles').select('full_name, role').eq('id', payload.new.student_id).single();
-          const newRequest = { ...payload.new, profile };
+          const newRequest = { ...payload.new, profile } as RequestType;
           setRequests(prev => [newRequest, ...prev]);
         } else if (payload.eventType === 'UPDATE') {
           setRequests(prev => prev.map(req => req.id === payload.new.id ? { ...req, ...payload.new } : req));
@@ -112,6 +124,7 @@ export default function HRDDashboard() {
       setActionError("Comments are mandatory to approve or reject a request.");
       return;
     }
+    if (!selectedReq) return;
     setActionError("");
 
     startTransition(async () => {
@@ -225,7 +238,7 @@ export default function HRDDashboard() {
           { label: "Approved This Month", value: approvedCount, icon: CheckCircle2, color: "#10B981" },
           { label: "Total Cohorts", value: "8", icon: Users, color: "#0B1F33" },
           { label: "Overall Attendance", value: "88%", icon: BarChart3, color: "#0B1F33" },
-        ].map((stat, i) => (
+        ].map((stat) => (
           <div
             key={stat.label}
             className="animate-up opacity-0 bg-white p-6 rounded-3xl border border-[#EAE3D5] shadow-[0_8px_30px_rgb(0,0,0,0.04)] flex items-center justify-between hover:shadow-[0_8px_30px_rgba(198,161,91,0.08)] transition-all duration-300"
@@ -268,7 +281,7 @@ export default function HRDDashboard() {
                 <Filter className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-[#5C6670]" />
                 <select
                   value={filter}
-                  onChange={(e) => setFilter(e.target.value as any)}
+                  onChange={(e) => setFilter(e.target.value as "all" | "pending" | "approved" | "rejected")}
                   className="pl-9 pr-8 py-2.5 w-full sm:w-auto rounded-xl border border-[#D1C7B5] bg-[#F5F0E6]/30 focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#C6A15B]/50 text-sm font-medium appearance-none transition-all cursor-pointer"
                 >
                   <option value="all">All Status</option>
@@ -308,7 +321,7 @@ export default function HRDDashboard() {
                 </tr>
               </thead>
               <tbody>
-                {filteredRequests.map((req, i) => (
+                {filteredRequests.map((req) => (
                   <tr 
                     key={req.id}
                     className="border-b border-[#EAE3D5]/50 hover:bg-[#F5F0E6]/30 transition-colors animate-up opacity-0"

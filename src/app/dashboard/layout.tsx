@@ -7,8 +7,7 @@ import gsap from "gsap";
 import { 
   LayoutDashboard, 
   Users, 
-  BookOpen, 
-  Settings, 
+  
   LogOut,
   Menu,
   X,

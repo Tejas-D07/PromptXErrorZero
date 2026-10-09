@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef } from "react";
-import { FileText, Download, PlayCircle, BookMarked, ArrowRight } from "lucide-react";
+import { FileText, Download, PlayCircle, BookMarked } from "lucide-react";
 import gsap from "gsap";
 
 const RESOURCES = [

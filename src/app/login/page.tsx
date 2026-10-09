@@ -123,7 +123,7 @@ export default function LoginPage() {
           {/* Footer Area */}
           <div className="bg-[#102A43] px-10 py-6 text-center border-t border-[#0B1F33]">
             <p className="text-[#F5F0E6] text-sm font-medium">
-              Don't have an account? <Link href="/contact" className="text-[#C6A15B] font-bold hover:text-white transition-colors ml-1 underline decoration-2 underline-offset-4">Request access</Link>
+              Don&apos;t have an account? <Link href="/contact" className="text-[#C6A15B] font-bold hover:text-white transition-colors ml-1 underline decoration-2 underline-offset-4">Request access</Link>
             </p>
           </div>
         </div>

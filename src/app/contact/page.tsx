@@ -51,7 +51,7 @@ export default function ContactPage() {
             <div>
               <h1 className="text-4xl md:text-6xl font-bold text-[#0B1F33] mb-6 tracking-tight">Get in Touch</h1>
               <p className="text-[#5C6670] text-lg font-medium leading-relaxed max-w-lg">
-                Whether you're a student seeking guidance, a recruiter looking to hire, or a trainer wanting to join our ranks — we're here to help.
+                Whether you&apos;re a student seeking guidance, a recruiter looking to hire, or a trainer wanting to join our ranks — we&apos;re here to help.
               </p>
             </div>
 

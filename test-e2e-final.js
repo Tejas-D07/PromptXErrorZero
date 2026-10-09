@@ -44,7 +44,7 @@ async function executeE2E() {
   // Since profiles are public, let's verify if the accounts actually exist in the target database!
   const emailsToTest = { hrd: hrdEmail, trainer: trainerEmail, student: studentEmail };
   for (const [role, email] of Object.entries(emailsToTest)) {
-    const { data: profile, error } = await adminClient.from('profiles').select('email, role').eq('email', email).single();
+    const { data: profile } = await adminClient.from('profiles').select('email, role').eq('email', email).single();
     if (!profile) {
       console.log(`[DIAGNOSTIC] ${role} email NOT FOUND in profiles table for this project URL. (Check if account exists or trigger failed during manual creation)`);
     } else {
@@ -147,7 +147,7 @@ async function executeE2E() {
       console.log("[PASS] HRD successfully approved the request.");
       
       // Verify audit logs
-      const { data: logs, error: auditErr } = await hrdClient.from('audit_logs').select('*').limit(1);
+      const { error: auditErr } = await hrdClient.from('audit_logs').select('*').limit(1);
       if (auditErr) {
         console.error("[FAIL] HRD cannot access audit logs:", auditErr.message);
       } else {

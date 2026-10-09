@@ -2,7 +2,7 @@
 
 import { useState, useTransition, use, useEffect } from "react";
 import { motion } from "framer-motion";
-import { CheckCircle2, XCircle, Clock, Save, Users, CalendarDays, ArrowLeft, Loader2, AlertCircle, Download } from "lucide-react";
+import { CheckCircle2, XCircle, Clock, Save, Users, CalendarDays, ArrowLeft, Loader2, Download } from "lucide-react";
 import Link from "next/link";
 import { saveAttendance } from "../../actions";
 import { cn } from "@/lib/utils";
@@ -17,8 +17,8 @@ export default function ClassDetailsPage({ params }: { params: Promise<{ classId
   const [isPending, startTransition] = useTransition();
   const [message, setMessage] = useState<{ type: "success" | "error", text: string } | null>(null);
   
-  const [roster, setRoster] = useState<any[]>([]);
-  const [classInfo, setClassInfo] = useState<any>(null);
+  const [roster, setRoster] = useState<Array<{id: string, full_name: string, email: string}>>([]);
+  const [classInfo, setClassInfo] = useState<Record<string, unknown> | null>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -35,7 +35,8 @@ export default function ClassDetailsPage({ params }: { params: Promise<{ classId
         .eq('class_id', classId);
 
       if (enr) {
-        setRoster(enr.map((e: any) => e.profile));
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        setRoster(enr.map((e: any) => Array.isArray(e.profile) ? e.profile[0] : e.profile));
       }
       setLoading(false);
     }
@@ -114,7 +115,7 @@ export default function ClassDetailsPage({ params }: { params: Promise<{ classId
       <div className="bg-white rounded-3xl p-8 border border-[#EAE3D5] shadow-sm">
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-8 pb-8 border-b border-[#EAE3D5]">
           <div>
-            <h3 className="text-3xl font-bold text-[#0B1F33] mb-2">{classInfo?.name || "Class"}</h3>
+            <h3 className="text-3xl font-bold text-[#0B1F33] mb-2">{classInfo?.name as string || "Class"}</h3>
             <p className="text-[#5C6670] flex items-center gap-2">
               <Users className="w-4 h-4" /> {roster.length} Students Enrolled
             </p>

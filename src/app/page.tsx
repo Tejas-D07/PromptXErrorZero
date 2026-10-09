@@ -1,6 +1,6 @@
 "use client";
 
-import { ArrowRight, BookOpen, Users, ShieldCheck, BarChart3 } from "lucide-react";
+import { ArrowRight, BookOpen, Users, BarChart3 } from "lucide-react";
 import Link from "next/link";
 import { useEffect, useRef } from "react";
 import gsap from "gsap";
